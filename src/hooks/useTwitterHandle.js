@@ -1,6 +1,6 @@
 import { useCallback, useMemo, useEffect, useState } from 'react';
 import { useAccount, useProvider, isAddress } from 'wagmi';
-import { IdrissCrypto, Authorization } from "idriss-crypto";
+import { IdrissCrypto } from "idriss-crypto";
 
 export default function useTwitterHandle({
     onFound,
@@ -8,10 +8,10 @@ export default function useTwitterHandle({
     onError
 }) {
     const { address, isConnecting, isDisconnected } = useAccount();
-    const [twitterHandle, setTwitterHandle ] = useState();
+    const [accountTwitterHandle, setAccountTwitterHandle ] = useState();
     const [isSuccess, setIsSuccess] = useState();
     const [isError, setIsError] = useState();
-    console.log(address, isConnecting, isDisconnected);
+    
     async function lookup(address) {
         try {
             const obj = new IdrissCrypto();
@@ -20,20 +20,23 @@ export default function useTwitterHandle({
             
             if (reverse !== "") {
                 console.log("[useTwitterHandle] Success: ", reverse);
+                
+                setAccountTwitterHandle(reverse);                
                 setIsSuccess(true);
+
                 if (onFound) {
                     onFound(reverse);
-                }            
+                }
             } else {
                 console.log("[useTwitterHandle] Not found, address not signed up for IDriss");
+                
                 if (onNotFound) {
                     onNotFound();
                 }
             }
-
-            return reverse;
         } catch(e) {
             console.error("[useTwitterHandle] Error: ",e);
+            
             setIsError(true);
             if (onError) {
                 onError(e);
@@ -43,11 +46,11 @@ export default function useTwitterHandle({
 
     useEffect(() => {
         if (isDisconnected || isConnecting) return;
-        setTwitterHandle(lookup(address));
+        lookup(address);
     }, [address]);
     
     return {
-        twitterHandle,
+        accountTwitterHandle,
         isSuccess,
         isError
     }

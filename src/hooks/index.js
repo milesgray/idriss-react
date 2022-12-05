@@ -1,1 +1,1 @@
-export * from './useTwitterHandle';
+export {useTwitterHandle} from './useTwitterHandle';

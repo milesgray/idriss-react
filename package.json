@@ -1,0 +1,10 @@
+{
+    "name": "idriss-crypto",
+    "version": "1.0.0",
+    "repository": "https://github.com/milesgray/idriss-react.git",
+    "author": "Miles Gray",
+    "license": "MIT",
+    "dependencies": {
+        "wagmi": "^0.8.8"
+    }
+}
